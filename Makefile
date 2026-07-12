@@ -1,12 +1,33 @@
-## Toolchain
-CC = riscv64-unknown-linux-gnu-gcc
+## Detect Operating System
+UNAME_S := $(shell uname -s)
+
+## Automatically detect available RISC-V compiler
+ifneq ($(shell which riscv64-elf-gcc 2>/dev/null),)
+    CC = riscv64-elf-gcc
+else ifneq ($(shell which riscv64-unknown-elf-gcc 2>/dev/null),)
+    CC = riscv64-unknown-elf-gcc
+else ifneq ($(shell which riscv64-unknown-linux-gnu-gcc 2>/dev/null),)
+    CC = riscv64-unknown-linux-gnu-gcc
+else
+    CC = riscv64-linux-gnu-gcc
+endif
+
 
 ## Directories
 BUILD = build
 
 ## Flags
-CFLAGS = -mcmodel=medany -nostdlib -I include -g
-LDFLAGS = -T linker.ld -lgcc
+# -ffreestanding гарантирует компиляцию в окружении без стандартной библиотеки
+CFLAGS = -mcmodel=medany -nostdlib -ffreestanding -I include -g
+
+## Resolve libgcc paths dynamically for both macOS and Linux
+# This queries the compiler itself to find the internal bare-metal helper library
+LIBGCC_PATH := $(shell $(CC) $(CFLAGS) -print-libgcc-file-name 2>/dev/null)
+ifeq ($(LIBGCC_PATH),)
+    LDFLAGS = -T linker.ld -lgcc
+else
+    LDFLAGS = -T linker.ld $(LIBGCC_PATH)
+endif
 
 ## Sources
 SRCS = boot.s serial.c qemu_dma.c fb.c kernel.c
@@ -32,7 +53,7 @@ run: $(KERNEL)
 		-kernel $(KERNEL) \
 		-device ramfb \
 		-bios none \
-		-serial stdio
+		-serial mon:stdio
 
 ## Run with GDB support
 gdb: $(KERNEL)
@@ -42,7 +63,7 @@ gdb: $(KERNEL)
 		-kernel $(KERNEL) \
 		-device ramfb \
 		-bios none \
-		-serial stdio
+		-serial mon:stdio
 
 ## Clean build artifacts
 clean:
