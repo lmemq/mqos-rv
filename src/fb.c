@@ -3,6 +3,14 @@
 #include "serial.h"
 #include "malloc.h"
 
+#define QOI_NO_STDIO 
+#define QOI_MALLOC(sz) kmalloc(sz)
+#define QOI_FREE(p)    kfree(p)
+#define QOI_MEMSET(dest, value, size) memset_(dest, value, size)
+#define QOI_MEMCPY(dest, src, size)   memcpy_(dest, src, size)
+#define QOI_IMPLEMENTATION
+#include "qoi.h"
+
 typedef struct {
     uint64_t fb_addr;
     uint32_t fb_width;
@@ -16,11 +24,21 @@ typedef struct {
 fb_info fb;
 uint32_t* back_buffer = 0;
 
-void memcpy_(void *dest, void *src, uint64_t n) {
+void *memset_(void *dest, int value, uint64_t size) {
+    uint8_t *ptr = (uint8_t *)dest;
+    for (uint64_t i = 0; i < size; i++) {
+        ptr[i] = (uint8_t)value;
+    }
+    return dest;
+}
+
+void *memcpy_(void *dest, void *src, uint64_t size) {
    char *csrc = (char *)src;
    char *cdest = (char *)dest;
   
-   for (int i=0; i<n; i++) cdest[i] = csrc[i];
+   for (int i = 0; i < size; i++) cdest[i] = csrc[i];
+
+   return dest;
 }
 
 int ramfb_setup(uint32_t width, uint32_t height) {
@@ -96,3 +114,5 @@ void draw_rgb256_map(uint32_t x_res, uint32_t y_res, uint8_t *rgb_map) {
         i += 4;
     }
 } // deprecated
+
+

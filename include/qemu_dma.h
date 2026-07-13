@@ -1,7 +1,7 @@
 #ifndef QEMU_DMA_H
 #define QEMU_DMA_H
 
-#include  <stdint.h>
+#include <stdint.h>
 
 #define QEMU_CFG_FILE_DIR               0x19
 

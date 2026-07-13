@@ -1,7 +1,7 @@
 #ifndef FB_H
 #define FB_H
 
-#include  <stdint.h>
+#include <stdint.h>
 
 #define fourcc_code(a, b, c, d) ((uint32_t)(a) | ((uint32_t)(b) << 8) | \
                                  ((uint32_t)(c) << 16) | ((uint32_t)(d) << 24))
@@ -14,6 +14,9 @@
 #define FB_WIDTH 1280
 #define FB_HEIGHT 720
 #define FB_BPP 4
+
+void *memset_(void *dest, int value, uint64_t size);
+void *memcpy_(void *dest, void *src, uint64_t size);
 
 int ramfb_setup(uint32_t width, uint32_t height);
 

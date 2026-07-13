@@ -1,7 +1,7 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
-#include  <stdint.h>
+#include <stdint.h>
 
 #define SERIAL_MMIO 0x10000000
 
