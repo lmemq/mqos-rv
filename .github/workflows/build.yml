@@ -1,0 +1,38 @@
+name: Build and Pack MQOS-RV
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-pack:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install RISC-V Cross-Compiler
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gcc-riscv64-unknown-elf binutils-riscv64-unknown-elf
+
+    - name: Compile OS Kernel
+      run: |
+        make all
+
+    - name: Prepare Release Package
+      run: |
+        mkdir -p mqos_release
+        cp build/kernel mqos_release/
+        cp scripts/run.sh mqos_release/
+        cp scripts/run.bat mqos_release/
+        chmod +x mqos_release/run.sh
+
+    - name: Upload Finished Package
+      uses: actions/artifacts/upload-artifact@v4
+      with:
+        name: mqos-rv
+        path: mqos_release/

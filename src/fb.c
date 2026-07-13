@@ -1,6 +1,9 @@
 #include "fb.h"
 #include "qemu_dma.h"
 #include "serial.h"
+#include "malloc.h"
+
+uint32_t* back_buffer = 0;
 
 void memcpy_(void *dest, void *src, uint64_t n)
 {
@@ -27,14 +30,29 @@ int ramfb_setup(fb_info *fb) {
         .stride = __builtin_bswap32(fb->fb_stride),
     };
     qemu_cfg_write_entry(&cfg, select, sizeof(cfg));
+
+    back_buffer = kmalloc(fb->fb_size);
+    void* ptr = back_buffer;
+    kprint_ui((uint64_t)ptr);
+    kprint(" ok\n");
 }
 
-void write_xrgb256_pixel(fb_info *fb, uint16_t x, uint16_t y, uint8_t pixel[4]){
+void put_pixel(fb_info *fb, uint16_t x, uint16_t y, uint32_t color) {
+    back_buffer[y * fb->fb_width + x] = color;
+}
+
+void flush(fb_info *fb) {
+    memcpy_((void*)fb->fb_addr, (void*)back_buffer, fb->fb_size);
+
+    asm volatile("fence w, o" ::: "memory");
+}
+
+void write_xrgb256_pixel(fb_info *fb, uint16_t x, uint16_t y, uint8_t pixel[4]){ // deprecated
     memcpy_((void*)fb->fb_addr + ((y * fb->fb_stride) + (x * fb->fb_bpp)), pixel, 4);
 }
 
 
-void write_rgb256_pixel(fb_info *fb, uint16_t x, uint16_t y, uint8_t pixel[3]) {
+void write_rgb256_pixel(fb_info *fb, uint16_t x, uint16_t y, uint8_t pixel[3]) { // deprecated
     // offset one byte (xrgb)
     memcpy_((void*)fb->fb_addr + ((y * fb->fb_stride) + (x * fb->fb_bpp)), pixel, 4);
 }
@@ -55,4 +73,4 @@ void draw_rgb256_map(fb_info *fb, uint32_t x_res, uint32_t y_res, uint8_t *rgb_m
 
         i += 4;
     }
-}
+} // for tests only, deprecated

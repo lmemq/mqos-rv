@@ -1,9 +1,8 @@
 #include "serial.h"
 
 void put_char(uint8_t ch) {
-    *((uint64_t*)SERIAL_MMIO) = ch;
+    *((volatile uint64_t*)SERIAL_MMIO) = ch;
 }
-
 
 void kprint(uint8_t *print_string) {
     uint64_t i = 0;
@@ -15,26 +14,21 @@ void kprint(uint8_t *print_string) {
         i++;
     }
 }
-
-void swap(int xp, int yp) {
-    int temp = xp;
-    xp = yp;
-    yp = temp;
-}
  
-void reverse(char str[], int length) {
+void reverse(uint8_t str[], int length) {
     int start = 0;
-    int end = length -1;
-    while (start < end)
-    {
-        swap(*(str+start), *(str+end));
+    int end = length - 1;
+    while (start < end) {
+        uint8_t temp = str[start];
+        str[start] = str[end];
+        str[end] = temp;
         start++;
         end--;
     }
 }
 
 void kprint_ui(uint64_t inp) {
-    uint8_t str[20];
+    uint8_t str[24];
     uitoa(str, inp, 10);
     kprint(str);
 }
@@ -64,3 +58,4 @@ uint8_t* uitoa(uint8_t *str, uint64_t num, int base) {
  
     return str;
 }
+

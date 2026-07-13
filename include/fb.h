@@ -20,6 +20,9 @@ typedef struct {
 
 int ramfb_setup(fb_info *fb);
 
+void put_pixel(fb_info *fb, uint16_t x, uint16_t y, uint32_t color);
+void flush(fb_info *fb);
+
 void write_xrgb256_pixel(fb_info *fb, uint16_t x, uint16_t y, uint8_t pixel[4]);
 void write_rgb256_pixel(fb_info *fb, uint16_t x, uint16_t y, uint8_t pixel[3]);
 void draw_rgb256_map(fb_info *fb, uint32_t x_res, uint32_t y_res, uint8_t *rgb_map);

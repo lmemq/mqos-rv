@@ -1,31 +1,92 @@
-This project is my adaptation of [Bare metal Qemu-Ramfb implementation](https://github.com/luickk/qemu-ramfb-aarch64-driver) from aarch64 to riscv64 architecture. I've just rewrote beginning assembly block, changed pors and memory addresses.
-Below is an original README.md.
+# mqos (RISC-V 64 OS)
 
-# Bare metal Qemu-Ramfb implementation
+A lightweight, bare-metal operating system for the **64-bit RISC-V** architecture. 
 
-This repository came into existance because I had to rewrite parts of the [ZigKernel](https://github.com/luickk/ZigKernel) in C, because the Zig lang in its current version(0.9.1) caused issues/ potentially misscompiles. 
+The project was started from Bare metal Qemu-Ramfb implementation for RISC-V, but came into the simple hobby OS.
 
-The intent of this project is to provide a driver for bare-metal qemu kernels with Aarch64 architechture wich need a simlpe way of outputting video. With the exception of the SeaBio x86 implementation(and other integrated x86 stacks) there is no such driver for Arm, nor bare metal avaiable yet.
-Alternatively there is virtio-gpu which is more complex and therefor not meant for pre-post video or very simple kernel emulation that need to display something.
+---
 
-The most challenging part of this drive implementation was indeed not the code, but finding information and documentation. My main documentation source was a single text file from Qemu which state the basic principles of their guest side dma interface; old qemu/linux kernel/gnu mailing lists, as well as the SeaBios ramfb implementation and the source code from qemu itself.
+## 📂 Project Structure
 
-Resources:
-- [Qemu fw_cfg/ guest side dma docs](https://github.com/qemu/qemu/blob/master/docs/specs/fw_cfg.rst)
-- [Qemu ramfb implementation](https://github.com/qemu/qemu/blob/master/hw/display/ramfb.c)
-- [SeaBios ramfb implementation for x86](https://github.com/coreboot/seabios/blob/master/vgasrc/ramfb.c)
-- [Qemu Mailing List](https://patchwork.kernel.org/project/qemu-devel/patch/20180613084149.14523-4-kraxel@redhat.com)
-- [RedHat Mailing List(very interesting)](https://bugzilla.redhat.com/show_bug.cgi?id=1679680)
+* `src/` — Sources
+* `include/` — Header files
+* `scripts/` — Scripts for fast-testing OS on windows, gnu/linux and macos
+* `linker.ld` — The linker script
+* `Makefile` — File for building mqos on gnu/linux and macos
+* `LICENSE` — Project license
 
-# Setup
+---
 
-The ramfb can be setup through the qemu fw_cfg (firmware config) which is in the mmio of the virtual machine(as device). As such the address can be found in the device tree blob which can found at the beginning of ram and parsed by the kernel or alternativel printed with qemu (just append `dumpdtb=dtb.dtb` to your vm cmd params).
-In the dtb the fw_cfg's address can be found and used as base address for this driver.
+## TODO / Features
 
-The ramfb cannot be configure thorugh the fw_cfg directly but only through the guest side dma interface which can be accessed through the addr register. This addr register is 8 bytes wide and at the fw_cfg base address + 16 (as stated in Qemu fw_cfg/ guest side dma docs).
+### 🟢 Completed
+- [x] **RISC-V 64-bit Architecture** — forked ramfb driver, kernel works.
+- [x] **Cross-Platform Makefile** — The build system auto-detects cross-compilers on both macOS and Linux.
+- [x] **Heap Allocator** — ram partitions, kmalloc(), kfree() and getting busy memory.
+- [x] **Double Buffering Screen** — `back_buffer` in the heap and flash().
 
-# Demonstration
+### 🟡 In Progress
+- [ ] **Bitmap Font**
+- [ ] **On-Screen Text Console**
+- [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print debug logs to both UART and the screen.
+- [ ] **Hide fb struct from kernel**
 
-An example of the bare metal kernel displaying a scaled up pixel art via qemu ramfb.
+### 🔴 Future
+- [ ] **RISC-V Trap Handler** — Write assembly code (`mtvec`) to catch CPU exceptions and prevent unrecoverable kernel panics.
+- [ ] **Hardware Timer** — Integrate the RISC-V hardware timer (`mtime`/`mtimecmp`) for accurate time ticks and a `ksleep()` function.
+- [ ] **Keyboard Input** — Read keypresses from QEMU to allow user control.
+- [ ] **Drivers** - drivers for many hardware. 
+- [ ] **QOI Support**
+- [ ] **Rings** - third ring mode for ram and userspace.
 
-![demonstration](media/example.png)
+---
+
+## How to Run Pre-Built Binaries
+
+U dont need to build mqos as we have built it for you
+
+1. Download latest **mqos.zip** from [releases page](https://github.com/lmemq/mqos-rv/releases)
+2. Extract the ZIP archive.
+3. Make sure you have QEMU (`qemu-system-riscv64`) installed.
+4. Launch the OS:
+   * **macOS / Linux**: `run.sh`
+   * **Windows**: `run.bat`
+
+*Tip: U can simply expand qemu window for best experiense!*
+
+---
+
+## How to Build
+
+### 1. Prerequisites
+You need a RISC-V cross-compiler and the QEMU system emulator:
+* **macOS**: `brew install riscv64-elf-gcc qemu`
+* **Debian**: `sudo apt install gcc-riscv64-unknown-elf qemu-system-misc`
+* **Other**: `U can just find instructions in the Net`
+
+### 2. Build Commands
+* **Compile Kernel**: `make all` (The compiled ELF image will appear in `build/kernel`)
+* **Compile and run**: `make run`
+* **Debug with GDB**: `make gdb`
+* **Clean**: `make clean`
+
+---
+
+## About mqos inside
+
+* RAM is: [stack, 64 KB] -> [ramfb (all pixels on qemu screen are connected to Ram), ±3.51 MB] - [heap, 32 MB]
+
+## The Lore Behind the Name
+
+* **The Child Dream:** Years ago, before knowing how to compile a single line of code, lmemq dreamed of building a custom "Windows-like" system ("mos")
+* **Nickname:**
+  * **`lme`** made from `lime` gaming nickname
+  * **`mq`** visual pseudo-signature, made from MineCraft, mc, mq
+* **Final name:** Merging `mq` with the `mos` causes `mqos`
+
+---
+
+## 👥 Credits & Acknowledgments
+
+* **@luickk** & **[@CityAceE](https://github.com/CityAceE)** — Huge thanks for the original `qemu-ramfb` driver. Their work is a graphic base of mqos-rv.
+* **[@lmemq](https://github.com/lmemq)** — Author of RISC-V mqos, mqos-rv.
