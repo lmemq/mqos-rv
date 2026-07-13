@@ -1,14 +1,18 @@
-name: Build and Pack MQOS-RV
+name: Build, Pack and Release MQOS-RV
 
 on:
   push:
     branches: [ "main" ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build-and-pack:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout repository
@@ -21,6 +25,7 @@ jobs:
 
     - name: Compile OS Kernel
       run: |
+        mkdir -p build
         make all
 
     - name: Prepare Release Package
@@ -30,9 +35,20 @@ jobs:
         cp scripts/run.sh mqos_release/
         cp scripts/run.bat mqos_release/
         chmod +x mqos_release/run.sh
+        
+        cd mqos_release && zip -r ../mqos-rv-bin.zip . && cd ..
 
-    - name: Upload Finished Package
+    - name: Upload Finished Package to Artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: mqos-rv
+        name: mqos-rv-bin
         path: mqos_release/
+
+    - name: Publish to GitHub Releases
+      if: startsWith(github.ref, 'refs/tags/')
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create ${{ github.ref_name }} mqos-rv-bin.zip \
+          --title "mqos-rv ${{ github.ref_name }}" \
+          --notes "Release of mqos rv64 kernel binaries. Run run.bat or run.sh"
