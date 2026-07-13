@@ -12,7 +12,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/upload-artifact@v4
+      uses: actions/checkout@v4
 
     - name: Install RISC-V Cross-Compiler
       run: |
@@ -32,7 +32,7 @@ jobs:
         chmod +x mqos_release/run.sh
 
     - name: Upload Finished Package
-      uses: actions/artifacts/upload-artifact@v4
+      uses: actions/upload-artifact@v4
       with:
         name: mqos-rv
         path: mqos_release/
