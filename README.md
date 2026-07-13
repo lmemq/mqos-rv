@@ -24,12 +24,12 @@ The project was started from Bare metal Qemu-Ramfb implementation for RISC-V, bu
 - [x] **Cross-Platform Makefile** — The build system auto-detects cross-compilers on both macOS and Linux.
 - [x] **Heap Allocator** — ram partitions, kmalloc(), kfree() and getting busy memory.
 - [x] **Double Buffering Screen** — `back_buffer` in the heap and flash().
+- [x] **Hide fb struct from kernel**
 
 ### 🟡 In Progress
 - [ ] **Bitmap Font**
 - [ ] **On-Screen Text Console**
 - [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print debug logs to both UART and the screen.
-- [ ] **Hide fb struct from kernel**
 
 ### 🔴 Future
 - [ ] **RISC-V Trap Handler** — Write assembly code (`mtvec`) to catch CPU exceptions and prevent unrecoverable kernel panics.
@@ -74,7 +74,7 @@ You need a RISC-V cross-compiler and the QEMU system emulator:
 
 ## About mqos inside
 
-* RAM is: [stack, 64 KB] -> [ramfb (all pixels on qemu screen are connected to Ram), ±3.51 MB] - [heap, 32 MB]
+* RAM is: [kernel] -> [stack, 64 KB] -> [heap, 64 MB] -> [ramfb (all pixels on qemu screen are connected to Ram), ±3.51 MB]
 
 ## The Lore Behind the Name
 

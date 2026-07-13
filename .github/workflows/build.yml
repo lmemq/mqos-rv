@@ -1,4 +1,4 @@
-name: Build, Pack and Release MQOS-RV
+name: Build, Pack and Release mqos-rv
 
 on:
   push:

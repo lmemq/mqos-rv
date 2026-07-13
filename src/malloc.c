@@ -1,4 +1,5 @@
 #include "malloc.h"
+#include "fb.h"
 
 typedef struct BlockHeader {
     size_t size;
@@ -15,7 +16,9 @@ static BlockHeader* free_list_head = NULL;
 
 static size_t busy_mem_size = 0;
 
-void heap_init(uint64_t start_address, size_t total_size) {
+void heap_init(size_t total_size) {
+    extern uint64_t _stack_top;
+    uint64_t start_address = (uint64_t)&_stack_top;
     uint64_t aligned_start = ALIGN(start_address);
     long long remaining_size = total_size - (aligned_start - start_address);
 

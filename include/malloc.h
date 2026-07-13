@@ -5,7 +5,9 @@
 #include <stddef.h>
 #include <stdbool.h>
 
-void heap_init(uint64_t start_address, size_t total_size);
+#define HEAP_SIZE 1024 * 1024 * 64
+
+void heap_init(size_t total_size);
 
 void* kmalloc(size_t size);
 void kfree(void* ptr);

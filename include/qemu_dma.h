@@ -1,3 +1,6 @@
+#ifndef QEMU_DMA_H
+#define QEMU_DMA_H
+
 #include  <stdint.h>
 
 #define QEMU_CFG_FILE_DIR               0x19
@@ -46,3 +49,5 @@ void kprint(uint8_t *print_string);
 
 void qemu_cfg_write_entry(void *buf, uint32_t e, uint32_t len);
 int qemu_cfg_find_file();
+
+#endif
