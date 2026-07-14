@@ -62,6 +62,8 @@ void kernel_main(void) {
 
   kprint_ui((uint64_t)get_busy_mem_size()); kprint(" after big clean\n");
 
+  // display_qoi_image();
+
   while (1);
 
   return;

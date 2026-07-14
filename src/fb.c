@@ -2,6 +2,7 @@
 #include "qemu_dma.h"
 #include "serial.h"
 #include "malloc.h"
+#include "wallpaper_data.h"
 
 #define QOI_NO_STDIO 
 #define QOI_MALLOC(sz) kmalloc(sz)
@@ -40,6 +41,46 @@ void *memcpy_(void *dest, void *src, uint64_t size) {
 
    return dest;
 }
+
+// void display_qoi_image(void) {
+//     qoi_desc desc;
+//     uint8_t *pixel_data = qoi_decode(imagetest_qoi, imagetest_qoi_len, &desc, 4);
+    
+//     if (!pixel_data) {
+//         return;
+//     }
+
+//     uint32_t width = desc.width;
+//     uint32_t height = desc.height;
+
+//     uint32_t *screen = (uint32_t *)back_buffer;
+//     uint32_t *pixels = (uint32_t *)pixel_data;
+    
+//     uint32_t total_pixels = width * height;
+    
+//     uint32_t screen_width = FB_WIDTH;
+
+//     uint32_t draw_width = (desc.width < screen_width) ? desc.width : screen_width;
+//     uint32_t draw_height = desc.height; 
+
+//     for (uint32_t y = 0; y < draw_height; y++) {
+//         for (uint32_t x = 0; x < draw_width; x++) {
+//             uint32_t img_idx = y * desc.width + x;
+//             uint32_t scr_idx = y * screen_width + x;
+
+//             uint32_t p = pixels[img_idx];
+            
+//             uint8_t r = (p >> 0)  & 0xFF;
+//             uint8_t g = (p >> 8)  & 0xFF;
+//             uint8_t b = (p >> 16) & 0xFF;
+//             uint8_t a = (p >> 24) & 0xFF;
+
+//             screen[scr_idx] = (a << 24) | (r << 16) | (g << 8) | b;
+//         }
+//     }
+//     flush();
+//     kfree(pixel_data);
+// }
 
 int ramfb_setup(uint32_t width, uint32_t height) {
     extern uint64_t _stack_top;

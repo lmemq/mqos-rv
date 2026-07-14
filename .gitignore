@@ -1,3 +1,5 @@
 .DS_Store
 build/
 comments.txt
+convert.py
+include/wallpaper_data.h

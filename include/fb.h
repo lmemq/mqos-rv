@@ -23,4 +23,6 @@ int ramfb_setup(uint32_t width, uint32_t height);
 void put_pixel(uint16_t x, uint16_t y, uint32_t color);
 void flush();
 
+// void display_qoi_image(void);
+
 #endif
