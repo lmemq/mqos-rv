@@ -90,4 +90,4 @@ You need a RISC-V cross-compiler and the QEMU system emulator:
 
 * **@luickk** & **[@CityAceE](https://github.com/CityAceE)** — Huge thanks for the original `qemu-ramfb` [driver](https://github.com/CityAceE/qemu-ramfb-riscv64-driver). Their work is a graphic base of mqos-rv.
 * **[@lmemq](https://github.com/lmemq)** — Author of RISC-V mqos, [mqos-rv](https://github.com/lmemq/mqos-rv).
-* **[@phoboslab](https://github.com/phoboslab) - Thanks for [qoi.h](https://github.com/phoboslab/qoi), image format (Used under MIT)
+* **[@phoboslab](https://github.com/phoboslab)** - Thanks for [qoi.h](https://github.com/phoboslab/qoi), image format (Used under MIT)
