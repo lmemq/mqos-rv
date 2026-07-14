@@ -2,7 +2,7 @@
 #include "qemu_dma.h"
 #include "serial.h"
 #include "malloc.h"
-#include "wallpaper_data.h"
+// #include "wallpaper_data.h"
 
 #define QOI_NO_STDIO 
 #define QOI_MALLOC(sz) kmalloc(sz)
