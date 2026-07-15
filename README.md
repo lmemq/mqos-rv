@@ -30,6 +30,7 @@ The project was started from Bare metal Qemu-Ramfb implementation for RISC-V, bu
 - [ ] **Bitmap Font**
 - [ ] **On-Screen Text Console**
 - [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print debug logs to both UART and the screen.
+threads, vector analog
 
 ### 🔴 Future
 - [ ] **RISC-V Trap Handler** — Write assembly code (`mtvec`) to catch CPU exceptions and prevent unrecoverable kernel panics.

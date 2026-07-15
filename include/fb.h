@@ -15,9 +15,6 @@
 #define FB_HEIGHT 720
 #define FB_BPP 4
 
-void *memset_(void *dest, int value, uint64_t size);
-void *memcpy_(void *dest, void *src, uint64_t size);
-
 int ramfb_setup(uint32_t width, uint32_t height);
 
 void put_pixel(uint16_t x, uint16_t y, uint32_t color);

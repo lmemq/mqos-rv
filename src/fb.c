@@ -4,11 +4,11 @@
 #include "malloc.h"
 // #include "wallpaper_data.h"
 
-#define QOI_NO_STDIO 
+#define QOI_NO_STDIO
 #define QOI_MALLOC(sz) kmalloc(sz)
 #define QOI_FREE(p)    kfree(p)
-#define QOI_MEMSET(dest, value, size) memset_(dest, value, size)
-#define QOI_MEMCPY(dest, src, size)   memcpy_(dest, src, size)
+#define QOI_MEMSET(dest, value, size) kmemset(dest, value, size)
+#define QOI_MEMCPY(dest, src, size)   kmemcpy(dest, src, size)
 #define QOI_IMPLEMENTATION
 #include "qoi.h"
 
@@ -24,23 +24,6 @@ typedef struct {
 
 fb_info fb;
 uint32_t* back_buffer = 0;
-
-void *memset_(void *dest, int value, uint64_t size) {
-    uint8_t *ptr = (uint8_t *)dest;
-    for (uint64_t i = 0; i < size; i++) {
-        ptr[i] = (uint8_t)value;
-    }
-    return dest;
-}
-
-void *memcpy_(void *dest, void *src, uint64_t size) {
-   char *csrc = (char *)src;
-   char *cdest = (char *)dest;
-  
-   for (int i = 0; i < size; i++) cdest[i] = csrc[i];
-
-   return dest;
-}
 
 // void display_qoi_image(void) {
 //     qoi_desc desc;
@@ -124,18 +107,18 @@ void put_pixel(uint16_t x, uint16_t y, uint32_t color) {
 }
 
 void flush() {
-    memcpy_((void*)fb.fb_addr, (void*)back_buffer, fb.fb_size);
+    kmemcpy((void*)fb.fb_addr, (void*)back_buffer, fb.fb_size);
     asm volatile("fence w, o" ::: "memory");
 }
 
 void write_xrgb256_pixel(uint16_t x, uint16_t y, uint8_t pixel[4]){ // deprecated
-    memcpy_((void*)fb.fb_addr + ((y * fb.fb_stride) + (x * fb.fb_bpp)), pixel, 4);
+    kmemcpy((void*)fb.fb_addr + ((y * fb.fb_stride) + (x * fb.fb_bpp)), pixel, 4);
 }
 
 
 void write_rgb256_pixel(uint16_t x, uint16_t y, uint8_t pixel[3]) { // deprecated
     // offset one byte (xrgb)
-    memcpy_((void*)fb.fb_addr + ((y * fb.fb_stride) + (x * fb.fb_bpp)), pixel, 4);
+    kmemcpy((void*)fb.fb_addr + ((y * fb.fb_stride) + (x * fb.fb_bpp)), pixel, 4);
 }
 
 void draw_rgb256_map(uint32_t x_res, uint32_t y_res, uint8_t *rgb_map) {
@@ -150,7 +133,7 @@ void draw_rgb256_map(uint32_t x_res, uint32_t y_res, uint8_t *rgb_map) {
             i += fb.fb_stride-map_stride;
         }
         // 1 compensates for alignement (xRGB)
-        memcpy_((void*)fb.fb_addr + i, &rgb_map[map_i], 4);
+        kmemcpy((void*)fb.fb_addr + i, &rgb_map[map_i], 4);
 
         i += 4;
     }
