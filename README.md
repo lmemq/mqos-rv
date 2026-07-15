@@ -25,12 +25,15 @@ The project was started from Bare metal Qemu-Ramfb implementation for RISC-V, bu
 - [x] **Heap Allocator** — ram partitions, kmalloc(), kfree() and getting busy memory.
 - [x] **Double Buffering Screen** — `back_buffer` in the heap and flash().
 - [x] **Hide fb struct from kernel**
+- [x] **Threading with yield()**
 
-### 🟡 In Progress
+### 🟡 In Progress / Near Future
 - [ ] **Bitmap Font**
 - [ ] **On-Screen Text Console**
-- [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print debug logs to both UART and the screen.
-threads, vector analog
+- [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print
+- [ ] **Debug logs to both UART and the screen.**
+- [ ] **Sleep() function**
+- [ ] **Threading on timer**
 
 ### 🔴 Future
 - [ ] **RISC-V Trap Handler** — Write assembly code (`mtvec`) to catch CPU exceptions and prevent unrecoverable kernel panics.
