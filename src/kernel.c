@@ -2,6 +2,22 @@
 #include "fb.h"
 #include "qemu_dma.h"
 #include "malloc.h"
+#include "thread.h"
+
+void test_thread1(void) {
+    while(1) {
+        kprint("A");
+        yield();
+    }
+}
+
+void test_thread2(void) {
+    while(1) {
+        kprint("B");
+        yield();
+    }
+}
+
 
 void kernel_main(void) {
   if (check_fw_cfg_dma()) {
@@ -64,7 +80,16 @@ void kernel_main(void) {
 
   // display_qoi_image();
 
-  while (1);
+  init_threads();
+  create_thread(test_thread1, 4096);
+  create_thread(test_thread2, 1024); 
+
+  kprint("Starting...!\n");
+  // yield();
+
+  // while (1) yield();
+
+  exit();
 
   return;
 }
