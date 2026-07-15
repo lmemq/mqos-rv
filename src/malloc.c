@@ -16,6 +16,23 @@ static BlockHeader* free_list_head = NULL;
 
 static size_t busy_mem_size = 0;
 
+void *kmemset(void *dest, int value, uint64_t size) {
+    uint8_t *ptr = (uint8_t *)dest;
+    for (uint64_t i = 0; i < size; i++) {
+        ptr[i] = (uint8_t)value;
+    }
+    return dest;
+}
+
+void *kmemcpy(void *dest, void *src, uint64_t size) {
+   char *csrc = (char *)src;
+   char *cdest = (char *)dest;
+  
+   for (int i = 0; i < size; i++) cdest[i] = csrc[i];
+
+   return dest;
+}
+
 void heap_init(size_t total_size) {
     extern uint64_t _stack_top;
     uint64_t start_address = (uint64_t)&_stack_top;

@@ -25,11 +25,15 @@ The project was started from Bare metal Qemu-Ramfb implementation for RISC-V, bu
 - [x] **Heap Allocator** — ram partitions, kmalloc(), kfree() and getting busy memory.
 - [x] **Double Buffering Screen** — `back_buffer` in the heap and flash().
 - [x] **Hide fb struct from kernel**
+- [x] **Threading with yield()**
 
-### 🟡 In Progress
+### 🟡 In Progress / Near Future
 - [ ] **Bitmap Font**
 - [ ] **On-Screen Text Console**
-- [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print debug logs to both UART and the screen.
+- [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print
+- [ ] **Debug logs to both UART and the screen.**
+- [ ] **Sleep() function**
+- [ ] **Threading on timer**
 
 ### 🔴 Future
 - [ ] **RISC-V Trap Handler** — Write assembly code (`mtvec`) to catch CPU exceptions and prevent unrecoverable kernel panics.
@@ -90,4 +94,4 @@ You need a RISC-V cross-compiler and the QEMU system emulator:
 
 * **@luickk** & **[@CityAceE](https://github.com/CityAceE)** — Huge thanks for the original `qemu-ramfb` [driver](https://github.com/CityAceE/qemu-ramfb-riscv64-driver). Their work is a graphic base of mqos-rv.
 * **[@lmemq](https://github.com/lmemq)** — Author of RISC-V mqos, [mqos-rv](https://github.com/lmemq/mqos-rv).
-* **[@phoboslab](https://github.com/phoboslab) - Thanks for [qoi.h](https://github.com/phoboslab/qoi), image format (Used under MIT)
+* **[@phoboslab](https://github.com/phoboslab)** - Thanks for [qoi.h](https://github.com/phoboslab/qoi), image format (Used under MIT)

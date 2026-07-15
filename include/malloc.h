@@ -14,4 +14,7 @@ void kfree(void* ptr);
 
 size_t get_busy_mem_size();
 
+void *kmemset(void *dest, int value, uint64_t size);
+void *kmemcpy(void *dest, void *src, uint64_t size);
+
 #endif
