@@ -6,8 +6,20 @@
 #define MAX_THREADS 64
 
 typedef struct thread_data {
-    uint64_t ra, sp, s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, stack_size;
-    char alive;
+    uint64_t ra;  // x1
+    uint64_t sp;  // x2
+    uint64_t gp;  // x3
+    uint64_t tp;  // x4
+    uint64_t t0, t1, t2; // x5 - x7
+    uint64_t s0, s1; // x8 - x9
+    uint64_t a0, a1, a2, a3, a4, a5, a6, a7; // x10 - x17
+    uint64_t s2, s3, s4, s5, s6, s7, s8, s9, s10, s11; // x18 - x27
+    uint64_t t3, t4, t5, t6; // x28 - x31
+    uint64_t sepc; // pc
+    uint64_t scause;  // trap cause
+    uint64_t stack_size;
+    uint64_t sleep_until_tick;
+    char status; 
 } thread_data;
 
 extern void _switch(thread_data* old, thread_data* new);
