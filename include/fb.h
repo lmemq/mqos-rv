@@ -20,6 +20,11 @@ int ramfb_setup(uint32_t width, uint32_t height);
 void put_pixel(uint16_t x, uint16_t y, uint32_t color);
 void flush();
 
-// void display_qoi_image(void);
+void display_qoi_image(void);
+
+void draw_font_string(int x, int y, const char* text, uint32_t color, int scale);
+void fill_rect(int start_x, int start_y, int width, int height, uint32_t color, uint8_t alpha);
+void fkprintf(const char *format, ...);
+void fkprintf_set_cursor(int x, int y, int scale);
 
 #endif

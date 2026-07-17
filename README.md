@@ -28,22 +28,15 @@ The project was started from fork of bare metal Qemu-Ramfb implementation for RI
 - [x] **Threading with yield()** - cooperative mutithreading
 - [x] **RISC-V Trap Handler** — can catch cpu exceptions and other traps
 - [x] **Hardware Timer** — timer for ksleep() and preemptive multithreading
+- [x] **QOI Image Support**
+- [x] **On-Screen Text Console**
+- [x] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print
 
 ### 🟡 In Progress / Near Future
-- [ ] **Bitmap Font**
-- [ ] **On-Screen Text Console**
-- [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print
-- [ ] **Debug logs to both UART and the screen.**
-remove deprecated
-add picture 
-add input
-add output on graf
-add out of get busy mem
+- [ ] **Keyboard Input** — Read keypresses from QEMU to allow user control.
 
 ### 🔴 Future
-- [ ] **Keyboard Input** — Read keypresses from QEMU to allow user control.
 - [ ] **Drivers** - drivers for many hardware. 
-- [ ] **QOI Support**
 - [ ] **Virtual Memory** — virtual memory management for userspace.
 - [ ] **Rings** - third ring mode for ram and userspace.
 
@@ -70,7 +63,7 @@ You dont need to build mqos as we have built it for you
 You need a RISC-V cross-compiler and the QEMU system emulator:
 * **macOS**: `brew install riscv64-elf-gcc qemu`
 * **Debian**: `sudo apt install gcc-riscv64-unknown-elf qemu-system-misc`
-* **Other**: `U can just find instructions in the Net`
+* **Other**: `You can just find instructions in the Net`
 
 ### 2. Build Commands
 * **Compile Kernel**: `make all` (The compiled ELF image will appear in `build/kernel`)
@@ -99,3 +92,6 @@ You need a RISC-V cross-compiler and the QEMU system emulator:
 * **@luickk** & **[@CityAceE](https://github.com/CityAceE)** — Huge thanks for the original `qemu-ramfb` [driver](https://github.com/CityAceE/qemu-ramfb-riscv64-driver). Their work is a graphic base of mqos-rv.
 * **[@lmemq](https://github.com/lmemq)** — Author of RISC-V mqos, [mqos-rv](https://github.com/lmemq/mqos-rv).
 * **[@phoboslab](https://github.com/phoboslab)** - Thanks for [qoi.h](https://github.com/phoboslab/qoi), image format (Used under MIT)
+* **NASA** - for providing wallpapers
+* **Red Hat** — for the [Liberation Mono Font](https://github.com/liberationfonts/liberation-fonts) (Distributed under SIL Open Font License).
+* **[@hubenchang0515](https://github.com/hubenchang0515)** — Thanks for the [ascii_font](https://github.com/hubenchang0515/ascii_font) generation tool (Used under MIT).

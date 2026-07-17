@@ -83,6 +83,7 @@ void scheduler_tick(void) {
         current_i = (current_i + 1) % MAX_THREADS; 
     }
     asm volatile("csrw mscratch, %0" : : "r"(&threads[current_i]));
+    // kprintf("[Scheduler] Switch to thread %d, stack top: %x\n", current_i, threads[current_i].sp);
 }
 
 void init_traps(void) {
@@ -159,8 +160,6 @@ void kexit(void) {
 }
 
 void ksleep(uint64_t ms) {
-    kprint_ui(ms);
-    kprint("\n");
     uint64_t ticks_to_sleep = ms / MS_IN_SYS_TICK;
     if (ticks_to_sleep == 0) ticks_to_sleep = 1; 
     threads[current_i].sleep_sys_ticks = ticks_to_sleep;

@@ -6,7 +6,7 @@
 
 void thread_a(void) {
     int e = 0;
-    while(1) { kprint("A ");
+    while(1) { fkprintf("A "); flush();
        ksleep(100); 
        e++;
       if (e == 5) {
@@ -15,7 +15,7 @@ void thread_a(void) {
       }
 }
 void thread_b(void) {
-    while(1) { kprint("B ");
+    while(1) { fkprintf("B "); flush();
        ksleep(500); }
 }
 
@@ -66,13 +66,6 @@ void kernel_main(void) {
   void *one = kmalloc(1024);
   void *two = kmalloc(64 * 1024);
   void *three = kmalloc(1024 * 1024);
-  
-  for (int y = 0; y < FB_HEIGHT; y++) {
-    for (int x = 0; x < FB_WIDTH; x++) {
-        put_pixel(x, y, 0xFFFFFFFF);
-    }
-  }
-  flush();
 
   kprint_ui((uint64_t)get_busy_mem_size()); kprint(" now\n");
 
@@ -81,7 +74,12 @@ void kernel_main(void) {
   kfree(three);
 
   kprint_ui((uint64_t)get_busy_mem_size()); kprint(" after big clean\n");
-  // display_qoi_image();
+  display_qoi_image();
+  fill_rect(50, 50, 800, 600, 0x00000000, 140);
+  fkprintf_set_cursor(60, 60, 1);
+  fkprintf("mqos-rv started\n");
+  fkprintf("heap: ~%u mb / 64 mb\n", get_busy_mem_size() / 1048576);
+  flush();
 
   kprint("Starting Scheduler and Traps...!\n");
 

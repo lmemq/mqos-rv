@@ -1,4 +1,5 @@
 #include "serial.h"
+#include <stdarg.h> 
 
 void put_char(uint8_t ch) {
     *((volatile uint64_t*)SERIAL_MMIO) = ch;
@@ -59,3 +60,59 @@ uint8_t* uitoa(uint8_t *str, uint64_t num, int base) {
     return str;
 }
 
+void kprintf(const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+
+    uint64_t i = 0;
+    uint8_t buffer[24];
+
+    while (format[i] != '\0') {
+        if (format[i] != '%') {
+            put_char(format[i]);
+            i++;
+            continue;
+        }
+        i++; 
+        switch (format[i]) {
+            case 'c': {
+                char c = (char)va_arg(args, int);
+                put_char(c);
+                break;
+            }
+            case 's': {
+                uint8_t *s = va_arg(args, uint8_t*);
+                if (s == 0) s = (uint8_t*)"(null)";
+                kprint(s);
+                break;
+            }
+            case 'd':
+            case 'u': {
+                uint64_t num = va_arg(args, uint64_t);
+                uitoa(buffer, num, 10);
+                kprint(buffer);
+                break;
+            }
+            case 'p':
+            case 'x': {
+                uint64_t num = va_arg(args, uint64_t);
+                kprint((uint8_t*)"0x"); 
+                uitoa(buffer, num, 16);
+                kprint(buffer);
+                break;
+            }
+            case '%': { 
+                put_char('%');
+                break;
+            }
+            default: { 
+                put_char('%');
+                put_char(format[i]);
+                break;
+            }
+        }
+        i++;
+    }
+
+    va_end(args);
+}
