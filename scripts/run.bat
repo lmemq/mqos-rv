@@ -16,6 +16,6 @@ qemu-system-riscv64.exe ^
     -device ramfb ^
     -bios none ^
     -serial mon:stdio ^
-    -display sdl,zoom_to_fit=on
+    -display gtk,zoom-to-fit=on
 
 pause
