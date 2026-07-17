@@ -2,7 +2,7 @@
 
 A lightweight, bare-metal operating system for the **64-bit RISC-V** architecture. 
 
-The project was started from Bare metal Qemu-Ramfb implementation for RISC-V, but came into the simple hobby OS.
+The project was started from fork of bare metal Qemu-Ramfb implementation for RISC-V, but came into the simple hobby OS.
 
 ---
 
@@ -23,31 +23,35 @@ The project was started from Bare metal Qemu-Ramfb implementation for RISC-V, bu
 - [x] **RISC-V 64-bit Architecture** — forked ramfb driver, kernel works.
 - [x] **Cross-Platform Makefile** — The build system auto-detects cross-compilers on both macOS and Linux.
 - [x] **Heap Allocator** — ram partitions, kmalloc(), kfree() and getting busy memory.
-- [x] **Double Buffering Screen** — `back_buffer` in the heap and flash().
+- [x] **Double Buffering Screen** — `back_buffer` in the heap and flush().
 - [x] **Hide fb struct from kernel**
-- [x] **Threading with yield()**
+- [x] **Threading with yield()** - cooperative mutithreading
+- [x] **RISC-V Trap Handler** — can catch cpu exceptions and other traps
+- [x] **Hardware Timer** — timer for ksleep() and preemptive multithreading
 
 ### 🟡 In Progress / Near Future
 - [ ] **Bitmap Font**
 - [ ] **On-Screen Text Console**
 - [ ] **Custom `kprintf()`** — Implement a format parser (`%d`, `%x`, `%s`) to print
 - [ ] **Debug logs to both UART and the screen.**
-- [ ] **Sleep() function**
-- [ ] **Threading on timer**
+remove deprecated
+add picture 
+add input
+add output on graf
+add out of get busy mem
 
 ### 🔴 Future
-- [ ] **RISC-V Trap Handler** — Write assembly code (`mtvec`) to catch CPU exceptions and prevent unrecoverable kernel panics.
-- [ ] **Hardware Timer** — Integrate the RISC-V hardware timer (`mtime`/`mtimecmp`) for accurate time ticks and a `ksleep()` function.
 - [ ] **Keyboard Input** — Read keypresses from QEMU to allow user control.
 - [ ] **Drivers** - drivers for many hardware. 
 - [ ] **QOI Support**
+- [ ] **Virtual Memory** — virtual memory management for userspace.
 - [ ] **Rings** - third ring mode for ram and userspace.
 
 ---
 
 ## How to Run Pre-Built Binaries
 
-U dont need to build mqos as we have built it for you
+You dont need to build mqos as we have built it for you
 
 1. Download latest **mqos.zip** from [releases page](https://github.com/lmemq/mqos-rv/releases)
 2. Extract the ZIP archive.
@@ -56,7 +60,7 @@ U dont need to build mqos as we have built it for you
    * **macOS / Linux**: `run.sh`
    * **Windows**: `run.bat`
 
-*Tip: U can simply expand qemu window for best experiense!*
+*Tip: You can simply expand qemu window for best experiense!*
 
 ---
 
