@@ -2,22 +2,16 @@
 #include "fb.h"
 #include "qemu_dma.h"
 #include "malloc.h"
-#include "thread.h"
+#include "trap.h"
 
-void test_thread1(void) {
-    while(1) {
-        kprint("A");
-        yield();
-    }
+void thread_a(void) {
+    while(1) { kprint("A ");
+       sleep(500); }
 }
-
-void test_thread2(void) {
-    while(1) {
-        kprint("B");
-        yield();
-    }
+void thread_b(void) {
+    while(1) { kprint("B ");
+       sleep(500); }
 }
-
 
 void kernel_main(void) {
   if (check_fw_cfg_dma()) {
@@ -34,6 +28,12 @@ void kernel_main(void) {
     kprint("error setting up ramfb \n");
   }
   kprint("setup ramfb successfull\n");
+
+  init_traps();
+  kprint("setup traps & threads successfull\n");
+
+    create_thread(thread_a, 4096);
+  create_thread(thread_b, 4096);
 
   kprint_ui(get_busy_mem_size());
   kprint(" before\n");
@@ -57,17 +57,15 @@ void kernel_main(void) {
   kprint_ui((uint64_t)ptr2); 
   kprint(" after\n");
   kfree(ptr2);
-
   void *one = kmalloc(1024);
   void *two = kmalloc(64 * 1024);
   void *three = kmalloc(1024 * 1024);
-
+  
   for (int y = 0; y < FB_HEIGHT; y++) {
     for (int x = 0; x < FB_WIDTH; x++) {
         put_pixel(x, y, 0xFFFFFFFF);
     }
   }
-
   flush();
 
   kprint_ui((uint64_t)get_busy_mem_size()); kprint(" now\n");
@@ -77,19 +75,11 @@ void kernel_main(void) {
   kfree(three);
 
   kprint_ui((uint64_t)get_busy_mem_size()); kprint(" after big clean\n");
-
   // display_qoi_image();
 
-  init_threads();
-  create_thread(test_thread1, 4096);
-  create_thread(test_thread2, 1024); 
+  kprint("Starting Scheduler and Traps...!\n");
 
-  kprint("Starting...!\n");
-  // yield();
-
-  // while (1) yield();
-
-  exit();
-
-  return;
+  while (1) {
+      asm volatile("wfi");
+  }
 }
