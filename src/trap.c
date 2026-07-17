@@ -149,23 +149,23 @@ thread_data* handle_trap(thread_data* tf) {
     return &threads[current_i];
 }
 
-void yield(void) {
+void kyield(void) {
     asm volatile("ecall");
 }
 
-void exit(void) {
+void kexit(void) {
     threads[current_i].status = STATUS_DEAD;
-    yield();
+    kyield();
 }
 
-void sleep(uint64_t ms) {
+void ksleep(uint64_t ms) {
     kprint_ui(ms);
     kprint("\n");
     uint64_t ticks_to_sleep = ms / MS_IN_SYS_TICK;
     if (ticks_to_sleep == 0) ticks_to_sleep = 1; 
     threads[current_i].sleep_sys_ticks = ticks_to_sleep;
     threads[current_i].status = STATUS_SLEEP;
-    yield();
+    kyield();
 }
 
 void create_thread(void (*func)(void), uint64_t stack_size) {

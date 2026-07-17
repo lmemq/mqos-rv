@@ -5,12 +5,18 @@
 #include "trap.h"
 
 void thread_a(void) {
+    int e = 0;
     while(1) { kprint("A ");
-       sleep(500); }
+       ksleep(100); 
+       e++;
+      if (e == 5) {
+        kexit();
+      }
+      }
 }
 void thread_b(void) {
     while(1) { kprint("B ");
-       sleep(500); }
+       ksleep(500); }
 }
 
 void kernel_main(void) {
