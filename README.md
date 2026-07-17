@@ -4,7 +4,7 @@ A lightweight, bare-metal operating system for the **64-bit RISC-V** architectur
 
 The project was started from fork of bare metal Qemu-Ramfb implementation for RISC-V, but came into the simple hobby OS.
 
-<video src="https://github.com/user-attachments/assets/63913c8c-7369-478f-afe5-a9bc164c0cbd" controls autoplay loop muted width="100%"></video>
+<img width="800" height="586" alt="preview" src="https://github.com/user-attachments/assets/b446a78e-1e7c-4ff3-8d42-d83a2e1434dc" />
 
 ---
 
