@@ -85,3 +85,4 @@ _trap_vector:
     ld x10, 72(a0)
 
     mret
+    
