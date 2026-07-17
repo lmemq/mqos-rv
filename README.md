@@ -48,7 +48,7 @@ The project was started from fork of bare metal Qemu-Ramfb implementation for RI
 
 You dont need to build mqos as we have built it for you
 
-1. Download latest **mqos.zip** from [releases page](https://github.com/lmemq/mqos-rv/releases)
+1. Download latest **mqos-rv-bin.zip** from [releases page](https://github.com/lmemq/mqos-rv/releases)
 2. Extract the ZIP archive.
 3. Make sure you have QEMU (`qemu-system-riscv64`) installed.
 4. Launch the OS:
