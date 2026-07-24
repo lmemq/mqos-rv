@@ -6,6 +6,8 @@ The project was started from fork of bare metal Qemu-Ramfb implementation for RI
 
 <img width="800" height="586" alt="preview" src="https://github.com/user-attachments/assets/b446a78e-1e7c-4ff3-8d42-d83a2e1434dc" />
 
+See (on russian) how lmemq was writing mqos MVP [on tproger](https://tproger.ru/articles/kak-ya-pisal-os-no-ne-pod-x86-a-pod-risc-v).
+
 ---
 
 ## 📂 Project Structure
